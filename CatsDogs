@@ -1,0 +1,39 @@
+from keras.models import Sequential
+from keras.layers import Convolution2D
+from keras.layers import MaxPooling2D
+from keras.layers import Flatten
+from keras.layers import Dense
+from keras.preprocessing.image import ImageDataGenerator
+from keras.callbacks import ModelCheckpoint
+from tensorflow.keras.optimizers import SGD
+from datetime import timedelta
+import matplotlib.pyplot as plt
+import time
+
+
+
+time_initial = time.time()
+
+
+# PART 1 - BUILDING CNN 
+
+# Initialize the CNN
+classifier = Sequential()
+
+#Convolutional setup
+classifier.add(Convolution2D(32, 3, 3, input_shape=(256,256,3), activation='relu'))
+
+# pooling step
+classifier.add(MaxPooling2D(pool_size=(2,2)))
+
+# Flattening step
+classifier.add(Flatten())
+
+# Full connection step
+classifier.add(Dense(output_dim=128, activation='relu'))
+classifier.add(Dense(output_dim=1, activation='sigmoid'))
+
+# Compile the CNN
+
+opt = SGD(lr=0.01)
+classifier.compile(optimizer=opt, loss='binary_crossentropy', metrics=['acc'])
